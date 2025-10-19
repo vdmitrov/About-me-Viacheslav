@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О себе — Слава</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    :root {
+      --bg: #f8f9fb;
+      --text: #1a1a1a;
+      --card: #ffffff;
+      --link: #0078ff;
+      --link-hover: #005fcc;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121212;
+      --text: #f1f1f1;
+      --card: #1e1e1e;
+      --link: #4da3ff;
+      --link-hover: #1e80ff;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 30px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      padding: 40px 50px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 1.05rem;
+      margin: 10px 0;
+    }
+
+    .links {
+      margin-top: 25px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      background: var(--link);
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 5px;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .links a:hover {
+      background: var(--link-hover);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .controls {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    select, button {
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    button:hover, select:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <select id="langSwitcher">
+      <option value="ru">RU</option>
+      <option value="en">EN</option>
+      <option value="uk">UA</option>
+    </select>
+    <button id="themeToggle">🌙</button>
+  </div>
+
+  <div class="card">
+    <h1 id="title">Привет, я Слава</h1>
+    <p id="desc">
+      Я просто человек, который любит разбираться в технике, коде и странных идеях.  
+      Умею чинить, настраивать и немного создавать.  
+      Если коротко — «сделай сам» — это про меня.
+    </p>
+
+    <div class="links">
+      <a href="https://github.com/YourGitHub" target="_blank">GitHub</a>
+      <a href="https://t.me/YourTelegram" target="_blank">Telegram</a>
+      <a href="mailto:youremail@example.com">Email</a>
+    </div>
+
+    <footer id="footer">© 2025 Слава. Всё просто.</footer>
+  </div>
+
+  <script>
+    // --- ТЕМНАЯ ТЕМА ---
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.body.dataset.theme = currentTheme;
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.onclick = () => {
+      const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.body.dataset.theme = newTheme;
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    };
+
+    // --- ЯЗЫКИ ---
+    const translations = {
+      ru: {
+        title: "Привет, я Слава",
+        desc: "Я просто человек, который любит разбираться в технике, коде и странных идеях. Умею чинить, настраивать и немного создавать. Если коротко — «сделай сам» — это про меня.",
+        footer: "© 2025 Слава. Всё просто."
+      },
+      en: {
+        title: "Hi, I'm Slava",
+        desc: "Just a person who enjoys tinkering with tech, code, and strange ideas. I can fix, set up, and sometimes create. In short — 'do it yourself' fits me well.",
+        footer: "© 2025 Slava. Simple as that."
+      },
+      uk: {
+        title: "Привіт, я Слава",
+        desc: "Я просто людина, яка любить розбиратися в техніці, коді та дивних ідеях. Вмію лагодити, налаштовувати і трохи створювати. Якщо коротко — «зроби сам» — це про мене.",
+        footer: "© 2025 Слава. Все просто."
+      }
+    };
+
+    const langSelect = document.getElementById('langSwitcher');
+    const savedLang = localStorage.getItem('lang');
+
+    // Определяем язык пользователя при первом визите
+    let userLang = savedLang || navigator.language.slice(0, 2);
+    if (!['ru', 'en', 'uk'].includes(userLang)) userLang = 'ru';
+    langSelect.value = userLang;
+    applyLanguage(userLang);
+
+    langSelect.onchange = () => {
+      const lang = langSelect.value;
+      applyLanguage(lang);
+      localStorage.setItem('lang', lang);
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('desc').textContent = t.desc;
+      document.getElementById('footer').textContent = t.footer;
+      document.documentElement.lang = lang;
+    }
+  </script>
+</body>
+</html>
