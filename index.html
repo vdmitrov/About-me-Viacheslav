@@ -3,243 +3,258 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вячеслав — О себе</title>
+  <title>Вячеслав — About Me</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
     :root {
-      --bg: #f8f9fb;
-      --text: #1a1a1a;
+      --bg-color: #f4f7fb;
+      --text-color: #222;
       --card-bg: white;
-      --link-bg: #0078ff;
-      --link-hover: #005fcc;
+      --accent: #00aaff;
     }
-
-    body.dark {
-      --bg: #0e1117;
-      --text: #f0f0f0;
-      --card-bg: #1b1f27;
-      --link-bg: #0099ff;
-      --link-hover: #4db8ff;
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --text-color: #f1f5f9;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
     }
-
     body {
-      margin: 0;
       font-family: "Inter", sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding: 30px;
       transition: background 0.3s, color 0.3s;
     }
-
     .card {
-      background: var(--card-bg);
+      background-color: var(--card-bg);
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      padding: 40px 50px;
-      max-width: 600px;
-      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 40px;
+      max-width: 500px;
       text-align: center;
-      animation: fadeIn 0.8s ease;
+      position: relative;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .avatar {
-      width: 120px;
-      height: 120px;
+    .photo {
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       margin: 0 auto 20px;
-      border: 5px solid aqua;
-      background: #e0f7ff;
-      background-size: cover;
-      background-position: center;
+      background: linear-gradient(135deg, #00bfff, #0095ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
+    .photo img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
     }
-
+    h1 { margin: 10px 0 5px; }
     p {
-      line-height: 1.6;
-      font-size: 1.05rem;
-      margin: 10px 0;
+      font-size: 15px;
+      line-height: 1.5;
     }
-
-    .links {
-      margin-top: 25px;
-    }
-
     .links a {
-      text-decoration: none;
-      color: white;
-      background: var(--link-bg);
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin: 5px;
       display: inline-block;
-      transition: background 0.2s;
+      margin: 8px;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
     }
-
-    .links a:hover {
-      background: var(--link-hover);
+    .links a:hover { opacity: 0.85; }
+    footer {
+      margin-top: 25px;
+      font-size: 13px;
+      opacity: 0.7;
     }
-
-    .controls {
-      position: fixed;
+    .top-buttons {
+      position: absolute;
       top: 20px;
       right: 20px;
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
     }
-
-    button {
-      background: var(--card-bg);
-      color: var(--text);
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      border-radius: 6px;
+    .theme-toggle {
       cursor: pointer;
-      transition: 0.2s;
+      font-size: 20px;
     }
-
-    button:hover {
-      background: var(--link-bg);
-      color: white;
+    .lang-menu {
+      position: relative;
+      display: inline-block;
     }
-
-    footer {
-      margin-top: 25px;
-      font-size: 0.9rem;
-      color: #888;
+    .lang-button {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 20px;
+    }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      margin-top: 5px;
+      z-index: 10;
+      overflow: hidden;
+    }
+    .lang-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+    .lang-dropdown button:hover {
+      background: rgba(0,0,0,0.05);
     }
   </style>
 </head>
 <body>
-
-  <div class="controls">
-    <button id="themeToggle">🌗</button>
-    <button onclick="setLang('ru')">RU</button>
-    <button onclick="setLang('uk')">UA</button>
-    <button onclick="setLang('en')">EN</button>
-    <button onclick="setLang('pl')">PL</button>
-    <button onclick="setLang('de')">DE</button>
-    <button onclick="setLang('by')">BY</button>
-  </div>
-
   <div class="card">
-    <div class="avatar" id="avatar" style="background-image: url('https://i.ibb.co/0y54ctVF/IMG-20240601-205919-764.jpg');"></div>
-    <h1 id="title">Вячеслав, 24 — Украина</h1>
-    <p id="bio"></p>
-
-    <div class="links">
-      <a id="link1" href="https://t.me/vdmitrov" target="_blank"></a>
-      <a id="link2" href="mailto:vdmitrov2001@gmail.com"></a>
-      <a id="link3" href="https://www.youtube.com/playlist?list=PLURV6yryYdeKBTm8j7sJ7bIFw6H6lzLKI" target="_blank"></a>
+    <div class="top-buttons">
+      <div class="theme-toggle" id="themeToggle">🌙</div>
+      <div class="lang-menu">
+        <button class="lang-button" id="langBtn">🌐</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button data-lang="ru">🇷🇺 Русский</button>
+          <button data-lang="uk">🇺🇦 Українська</button>
+          <button data-lang="en">🇬🇧 English</button>
+          <button data-lang="pl">🇵🇱 Polski</button>
+          <button data-lang="de">🇩🇪 Deutsch</button>
+          <button data-lang="by">🇧🇾 Беларуская</button>
+        </div>
+      </div>
     </div>
-
+    <div class="photo">
+      <img src="https://i.ibb.co/0y54ctVF/photo.jpg" alt="Вячеслав">
+    </div>
+    <h1 id="name">Вячеслав, 24 — Украина</h1>
+    <p id="bio">
+      Привет, вы находитесь на моей странице и, наверное, хотите узнать обо мне.<br><br>
+      Люблю слушать музыку, раньше занимался программированием, а сейчас кручу машины — это частично хобби и частично заработок.<br>
+      Пишу лирические высказывания, раньше пробовал писать песни.<br>
+      Иногда создаю небольшие лендинги для подработки. Люблю много болтать.
+    </p>
+    <div class="links">
+      <a href="https://t.me/vdmitrov" target="_blank">Telegram</a>
+      <a href="mailto:vdmitrov2001@gmail.com">Email</a>
+      <a href="https://www.youtube.com/playlist?list=PLURV6yryYdeKBTm8j7sJ7bIFw6H6lzLKI" target="_blank">Музыка</a>
+    </div>
     <footer>© 2025 vdmitrov</footer>
   </div>
 
   <script>
+    // Dark theme toggle
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      const current = document.body.getAttribute("data-theme");
+      const newTheme = current === "dark" ? "" : "dark";
+      document.body.setAttribute("data-theme", newTheme);
+      themeToggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
+    });
+
+    // Language dropdown
+    const langBtn = document.getElementById("langBtn");
+    const langDropdown = document.getElementById("langDropdown");
+    langBtn.addEventListener("click", () => {
+      langDropdown.style.display =
+        langDropdown.style.display === "block" ? "none" : "block";
+    });
+    document.addEventListener("click", (e) => {
+      if (!langBtn.contains(e.target)) langDropdown.style.display = "none";
+    });
+
     const translations = {
       ru: {
-        title: "Вячеслав, 24 — Украина",
-        bio: `Привет! Вы находитесь на моей странице и, наверное, хотите узнать обо мне.<br><br>
-        Люблю слушать музыку, раньше занимался программированием,  
-        а сейчас кручу машины — это и хобби, и частично заработок.  
-        Пишу лирические высказывания, иногда пробовал сочинять песни.<br><br>
-        Иногда делаю небольшие LandingPage для подработки.  
-        Люблю говорить и обсуждать разные темы.`,
-        links: ["Telegram", "Email", "Моя музыка"]
+        name: "Вячеслав, 24 — Украина",
+        bio: `Привет, вы находитесь на моей странице и, наверное, хотите узнать обо мне.<br><br>
+        Люблю слушать музыку, раньше занимался программированием, а сейчас кручу машины — это частично хобби и частично заработок.<br>
+        Пишу лирические высказывания, раньше пробовал писать песни.<br>
+        Иногда создаю небольшие лендинги для подработки. Люблю много болтать.`,
+        tg: "Telegram", mail: "Email", yt: "Музыка",
       },
       uk: {
-        title: "Вʼячеслав, 24 — Україна",
-        bio: `Привіт! Ви на моїй сторінці й, мабуть, хочете трохи дізнатись про мене.<br><br>
-        Люблю слухати музику, раніше займався програмуванням,  
-        а тепер кручу машини — це і хобі, і підробіток.  
-        Пишу ліричні вислови, колись пробував створювати власні пісні.<br><br>
-        Іноді роблю невеликі LandingPage.  
-        Люблю говорити й знаходити цікаві теми.`,
-        links: ["Telegram", "Пошта", "Моя музика"]
+        name: "В’ячеслав, 24 — Україна",
+        bio: `Привіт, ви на моїй сторінці і, мабуть, хочете дізнатися про мене більше.<br><br>
+        Люблю слухати музику, раніше займався програмуванням, а зараз займаюся автомобілями — частково це хобі, частково робота.<br>
+        Пишу ліричні вислови, колись пробував писати пісні.<br>
+        Іноді створюю невеликі лендінги для підробітку. Люблю багато говорити.`,
+        tg: "Телеграм", mail: "Пошта", yt: "Музика",
       },
       en: {
-        title: "Vyacheslav, 24 — Ukraine",
-        bio: `Hi! You’ve landed on my page — probably curious who I am.<br><br>
-        I love music, used to do programming,  
-        and now I work with cars — both a hobby and a side job.  
-        I write lyrical reflections and once tried writing songs.<br><br>
-        Sometimes I create small landing pages.  
-        I love talking and exploring random topics.`,
-        links: ["Telegram", "Email", "My music"]
+        name: "Vyacheslav, 24 — Ukraine",
+        bio: `Hi, you're on my page and probably want to know a bit about me.<br><br>
+        I love listening to music. I used to do programming, and now I work with cars — partly as a hobby, partly as a job.<br>
+        I write lyrical thoughts and once tried writing songs.<br>
+        Sometimes I build small landing pages for side gigs. I love to talk a lot.`,
+        tg: "Telegram", mail: "Email", yt: "Music",
       },
       pl: {
-        title: "Wiaczesław, 24 — Ukraina",
-        bio: `Cześć! Jesteś na mojej stronie i pewnie chcesz dowiedzieć się o mnie trochę więcej.<br><br>
-        Lubię słuchać muzyki, kiedyś zajmowałem się programowaniem,  
-        a teraz pracuję przy samochodach — to moje hobby i sposób na zarobek.  
-        Piszę liryczne myśli, czasem próbowałem tworzyć własne piosenki.<br><br>
-        Czasami robię małe strony typu LandingPage.  
-        Lubię dużo rozmawiać i poznawać ciekawych ludzi.`,
-        links: ["Telegram", "Email", "Moja muzyka"]
+        name: "Wiaczesław, 24 — Ukraina",
+        bio: `Cześć, jesteś na mojej stronie i pewnie chcesz dowiedzieć się czegoś o mnie.<br><br>
+        Lubię słuchać muzyki, kiedyś zajmowałem się programowaniem, a teraz pracuję przy samochodach — częściowo hobby, częściowo praca.<br>
+        Piszę liryczne przemyślenia, kiedyś próbowałem pisać piosenki.<br>
+        Czasami tworzę małe strony typu landing page. Lubię dużo rozmawiać.`,
+        tg: "Telegram", mail: "E-mail", yt: "Muzyka",
       },
       de: {
-        title: "Wjatscheslaw, 24 — Ukraine",
-        bio: `Hallo! Du bist auf meiner Seite gelandet und willst wahrscheinlich ein wenig über mich erfahren.<br><br>
-        Ich liebe Musik, habe früher programmiert,  
-        und jetzt arbeite ich mit Autos – ein Hobby und ein Nebenverdienst.  
-        Ich schreibe manchmal lyrische Gedanken und habe früher Songs versucht zu schreiben.<br><br>
-        Ab und zu mache ich kleine LandingPages.  
-        Ich rede gern und mag ehrliche Gespräche.`,
-        links: ["Telegram", "E-Mail", "Meine Musik"]
+        name: "Wjatscheslaw, 24 — Ukraine",
+        bio: `Hallo, du bist auf meiner Seite und möchtest wahrscheinlich etwas über mich erfahren.<br><br>
+        Ich höre gerne Musik, habe früher programmiert und arbeite jetzt mit Autos – teils als Hobby, teils als Beruf.<br>
+        Ich schreibe lyrische Gedanken und habe früher versucht, Lieder zu schreiben.<br>
+        Manchmal erstelle ich kleine Landingpages nebenbei. Ich rede gerne viel.`,
+        tg: "Telegram", mail: "E-Mail", yt: "Musik",
       },
       by: {
-        title: "Вячаслаў, 24 — Украіна",
-        bio: `Прывітанне! Вы на маёй старонцы і, напэўна, хочаце крыху даведацца пра мяне.<br><br>
-        Люблю слухаць музыку, раней займаўся праграмаваннем,  
-        цяпер займаюся аўтамабілямі — гэта і хобі, і праца.  
-        Пішу лірычныя думкі, калі прыходзіць натхненне.<br><br>
-        Часам раблю невялікія LandingPage.  
-        Люблю паразмаўляць і абмяркоўваць цікавыя рэчы.`,
-        links: ["Тэлеграм", "Пошта", "Мая музыка"]
-      }
+        name: "Вячаслаў, 24 — Украіна",
+        bio: `Прывітанне! Вы на маёй старонцы і, напэўна, хочаце даведацца пра мяне.<br><br>
+        Люблю слухаць музыку, раней займаўся праграмаваннем, цяпер працую з машынамі — часткова хобі, часткова праца.<br>
+        Пішу лірычныя думкі, калісьці спрабаваў пісаць песні.<br>
+        Часам раблю невялікія лендынгі. Люблю шмат гаварыць.`,
+        tg: "Тэлеграм", mail: "Пошта", yt: "Музыка",
+      },
     };
 
-    function setLang(lang) {
-      const t = translations[lang] || translations["en"];
-      document.getElementById("title").innerHTML = t.title;
+    document.querySelectorAll(".lang-dropdown button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.lang;
+        const t = translations[lang];
+        document.getElementById("name").innerHTML = t.name;
+        document.getElementById("bio").innerHTML = t.bio;
+        const a = document.querySelectorAll(".links a");
+        a[0].textContent = t.tg;
+        a[1].textContent = t.mail;
+        a[2].textContent = t.yt;
+        langDropdown.style.display = "none";
+      });
+    });
+
+    // autodetect browser language
+    const browserLang = navigator.language.slice(0,2);
+    if (translations[browserLang]) {
+      const t = translations[browserLang];
+      document.getElementById("name").innerHTML = t.name;
       document.getElementById("bio").innerHTML = t.bio;
-      document.getElementById("link1").textContent = t.links[0];
-      document.getElementById("link2").textContent = t.links[1];
-      document.getElementById("link3").textContent = t.links[2];
-    }
-
-    // Detect user language
-    const userLang = navigator.language.slice(0, 2);
-    if (translations[userLang]) setLang(userLang);
-    else setLang("en");
-
-    // Theme toggle
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.onclick = () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-    };
-
-    // Restore saved theme
-    if (localStorage.getItem("theme") === "dark") {
-      document.body.classList.add("dark");
+      const a = document.querySelectorAll(".links a");
+      a[0].textContent = t.tg;
+      a[1].textContent = t.mail;
+      a[2].textContent = t.yt;
     }
   </script>
 </body>
